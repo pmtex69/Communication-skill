@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voz & Presença — Treino de Comunicação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #F5EDCE;
+    --gold-mid: #D4A843;
+    --gold-dark: #7A5C1E;
+    --bg: #FAFAF7;
+    --surface: #F2EFE7;
+    --card: #FFFFFF;
+    --border: rgba(0,0,0,0.10);
+    --border-strong: rgba(0,0,0,0.18);
+    --text: #1A1A1A;
+    --text-muted: #666655;
+    --text-hint: #999988;
+    --green-bg: #EAF5E0;
+    --green-text: #2E6B1A;
+    --amber-bg: #FDF3D8;
+    --amber-text: #7A5010;
+    --red-bg: #FCEAEA;
+    --red-text: #8B2020;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141410;
+      --surface: #1E1E18;
+      --card: #242420;
+      --border: rgba(255,255,255,0.10);
+      --border-strong: rgba(255,255,255,0.20);
+      --text: #F0EEE4;
+      --text-muted: #A0A090;
+      --text-hint: #666658;
+      --gold-light: #3A2E10;
+      --gold-dark: #D4A843;
+      --green-bg: #162810;
+      --green-text: #7BC95A;
+      --amber-bg: #2A2008;
+      --amber-text: #E8B860;
+      --red-bg: #280A0A;
+      --red-text: #E87070;
+    }
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* LAYOUT */
+  .app-shell {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 0 6rem;
+  }
+
+  /* HEADER */
+  .app-header {
+    background: var(--card);
+    border-bottom: 0.5px solid var(--border);
+    padding: 2rem 2rem 1.5rem;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+
+  .header-badge {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    background: var(--gold-light);
+    border-radius: 20px;
+    padding: 4px 14px;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+  }
+
+  .app-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .app-header .tagline {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .header-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold-dark);
+    display: block;
+  }
+  .stat-lbl { font-size: 11px; color: var(--text-muted); }
+
+  /* NAV */
+  .nav-bar {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 0 2rem;
+    background: var(--card);
+    border-bottom: 0.5px solid var(--border);
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    position: sticky;
+    top: 176px;
+    z-index: 99;
+  }
+  .nav-bar::-webkit-scrollbar { display: none; }
+
+  .nav-btn {
+    flex-shrink: 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    padding: 7px 18px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { color: var(--text); border-color: var(--border-strong); }
+  .nav-btn.active {
+    background: var(--gold-dark);
+    color: #fff;
+    border-color: var(--gold-dark);
+    font-weight: 500;
+  }
+
+  /* SECTIONS */
+  .section { display: none; padding: 2rem; }
+  .section.visible { display: block; }
+
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .section-sub {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 1.75rem;
+    line-height: 1.6;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .card-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.45;
+    margin-bottom: 0.75rem;
+  }
+
+  .card-tip {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    border-left: 2.5px solid var(--gold);
+    padding-left: 12px;
+    margin-top: 0.5rem;
+  }
+
+  /* INSIGHT BOX */
+  .insight {
+    background: var(--gold-light);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+  }
+  .insight i { font-size: 20px; color: var(--gold-dark); margin-top: 2px; flex-shrink: 0; }
+  .insight-text { font-size: 14px; color: var(--gold-dark); line-height: 1.6; }
+  .insight-text strong { font-weight: 500; display: block; margin-bottom: 3px; }
+
+  /* MODULE GRID */
+  .mod-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+
+  .mod-card {
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1.1rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+  }
+  .mod-card:hover { border-color: var(--gold-dark); transform: translateY(-1px); }
+  .mod-card.selected { border: 1.5px solid var(--gold-dark); background: var(--surface); }
+
+  .mod-icon { font-size: 24px; color: var(--gold-dark); margin-bottom: 8px; }
+  .mod-name { font-weight: 500; font-size: 15px; color: var(--text); margin-bottom: 4px; }
+  .mod-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+  .mod-badge {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    background: var(--gold-light);
+    color: var(--gold-dark);
+    font-weight: 500;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .progress-header span:first-child { font-weight: 500; font-size: 14px; color: var(--text); }
+  .progress-header span:last-child { font-size: 13px; color: var(--text-muted); }
+
+  .progress-track {
+    height: 6px;
+    background: var(--surface);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--gold-dark);
+    border-radius: 3px;
+    transition: width 0.6s ease;
+  }
+
+  .streak-dots { display: flex; gap: 8px; }
+  .streak-dot {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 500;
+    background: var(--surface);
+    color: var(--text-muted);
+    border: 0.5px solid var(--border);
+    transition: all 0.3s;
+  }
+  .streak-dot.done { background: var(--gold-dark); color: #fff; border-color: var(--gold-dark); }
+  .streak-dot.today { border: 1.5px solid var(--gold-dark); color: var(--gold-dark); font-weight: 700; }
+
+  /* TIMER */
+  .timer-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 1rem 0 0.5rem;
+  }
+  .timer-display {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold-dark);
+    min-width: 72px;
+    line-height: 1;
+  }
+  .timer-display.done { color: var(--green-text); font-size: 22px; }
+
+  /* BUTTONS */
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 9px 22px;
+    border-radius: 8px;
+    border: 0.5px solid var(--border-strong);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.18s;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--surface); }
+
+  .btn-gold {
+    background: var(--gold-dark);
+    color: #fff;
+    border-color: var(--gold-dark);
+    font-weight: 500;
+  }
+  .btn-gold:hover { opacity: 0.9; background: var(--gold-dark); }
+
+  /* TABS */
+  .tab-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 6px 16px;
+    border-radius: 7px;
+    border: 0.5px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tab-btn.active {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border-strong);
+    font-weight: 500;
+  }
+
+  .sub-section { display: none; }
+  .sub-section.visible { display: block; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 0.5px solid var(--border);
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.5;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li:hover { opacity: 0.8; }
+
+  .check-circle {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-strong);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+    transition: all 0.2s;
+    font-size: 12px;
+    color: transparent;
+  }
+  .check-circle.done {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+    color: #fff;
+  }
+
+  /* SCORE BUTTONS */
+  .score-row { display: flex; gap: 8px; margin-top: 1rem; }
+  .score-btn {
+    flex: 1;
+    padding: 9px 8px;
+    border-radius: 8px;
+    border: 0.5px solid var(--border);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .score-btn:hover { background: var(--surface); color: var(--text); }
+  .score-btn.bad { background: var(--red-bg); color: var(--red-text); border-color: var(--red-text); }
+  .score-btn.ok { background: var(--amber-bg); color: var(--amber-text); border-color: var(--amber-text); }
+  .score-btn.good { background: var(--green-bg); color: var(--green-text); border-color: var(--green-text); }
+
+  /* FEEDBACK */
+  .feedback-box {
+    background: var(--green-bg);
+    color: var(--green-text);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-top: 1rem;
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .feedback-box.visible { display: block; }
+
+  /* PHRASE CARDS */
+  .phrase-card {
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    padding: 1rem 1.25rem;
+    margin-bottom: 10px;
+  }
+  .phrase-situation {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gold-dark);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .phrase-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.45;
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+  .phrase-why { font-size: 12px; color: var(--text-muted); line-height: 1.55; }
+
+  /* PRESENTATION AP */
+  .ap-tabs { display: flex; gap: 10px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .ap-tab-btn {
+    flex: 1;
+    min-width: 140px;
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+  }
+  .ap-tab-btn:hover { border-color: var(--gold-dark); }
+  .ap-tab-btn.active { border: 1.5px solid var(--gold-dark); background: var(--surface); }
+  .ap-tab-icon { font-size: 20px; color: var(--gold-dark); margin-bottom: 6px; }
+  .ap-tab-name { font-size: 14px; font-weight: 500; color: var(--text); }
+  .ap-tab-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .ap-content { display: none; }
+  .ap-content.visible { display: block; }
+
+  /* DIVIDER */
+  .divider {
+    height: 0.5px;
+    background: var(--border);
+    margin: 1.5rem 0;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* DAILY EXERCISE */
+  .daily-card {
+    background: linear-gradient(135deg, var(--gold-light) 0%, var(--card) 60%);
+    border: 0.5px solid var(--gold);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    animation: fadeIn 0.4s ease;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 10px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .app-header { padding: 1.5rem 1rem 1rem; }
+    .nav-bar { padding: 0.5rem 1rem; }
+    .section { padding: 1.5rem 1rem; }
+    .header-stats { gap: 1.5rem; }
+    .mod-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-badge">treino de comunicação pessoal</div>
+    <h1>Voz & Presença</h1>
+    <p class="tagline">O teu espaço diário para seres mais persuasivo, memorável e confiante.</p>
+    <div class="header-stats">
+      <div class="stat">
+        <span class="stat-num" id="stat-streak">0</span>
+        <span class="stat-lbl">dias seguidos</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="stat-ex">0</span>
+        <span class="stat-lbl">exercícios feitos</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">6</span>
+        <span class="stat-lbl">módulos</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAV -->
+  <nav class="nav-bar" role="navigation" aria-label="Módulos">
+    <button class="nav-btn active" onclick="showSection('inicio', this)">
+      <i class="ti ti-home" aria-hidden="true"></i> Início
+    </button>
+    <button class="nav-btn" onclick="showSection('voz', this)">
+      <i class="ti ti-microphone" aria-hidden="true"></i> Voz & Tom
+    </button>
+    <button class="nav-btn" onclick="showSection('conversa', this)">
+      <i class="ti ti-messages" aria-hidden="true"></i> Conversas
+    </button>
+    <button class="nav-btn" onclick="showSection('apresentacao', this)">
+      <i class="ti ti-presentation" aria-hidden="true"></i> Apresentações
+    </button>
+    <button class="nav-btn" onclick="showSection('presenca', this)">
+      <i class="ti ti-eye" aria-hidden="true"></i> Presença
+    </button>
+    <button class="nav-btn" onclick="showSection('arsenal', this)">
+      <i class="ti ti-sword" aria-hidden="true"></i> Arsenal
+    </button>
+  </nav>
+
+  <!-- ═══════════════════ INÍCIO ═══════════════════ -->
+  <section class="section visible" id="sec-inicio">
+    <div class="section-heading">O teu plano de hoje</div>
+    <p class="section-sub">Treino diário · 10–15 minutos · cada exercício conta</p>
+
+    <div class="progress-wrap">
+      <div class="progress-header">
+        <span>Progresso semanal</span>
+        <span id="week-pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="week-bar" style="width:0%"></div>
+      </div>
+      <div class="streak-dots" id="streak-dots"></div>
+    </div>
+
+    <div class="daily-card" id="daily-card">
+      <div class="card-label">exercício do dia</div>
+      <div class="card-title" id="daily-text">A carregar...</div>
+      <div class="card-tip" id="daily-tip"></div>
+      <div style="margin-top:1.25rem; display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn btn-gold" onclick="markDone()">Feito! ✓</button>
+        <button class="btn" onclick="nextExercise()">Outro exercício</button>
+      </div>
+      <div class="feedback-box" id="daily-feedback"></div>
+    </div>
+
+    <div class="mod-grid">
+      <div class="mod-card" onclick="showSection('voz', null)">
+        <div class="mod-icon"><i class="ti ti-microphone" aria-hidden="true"></i></div>
+        <div class="mod-name">Voz & Tom</div>
+        <div class="mod-desc">Pausas, ritmo, projeção e emoção na fala.</div>
+        <div class="mod-badge">5 exercícios</div>
+      </div>
+      <div class="mod-card" onclick="showSection('conversa', null)">
+        <div class="mod-icon"><i class="ti ti-messages" aria-hidden="true"></i></div>
+        <div class="mod-name">Conversas</div>
+        <div class="mod-desc">Abre com confiança. Sai memorável.</div>
+        <div class="mod-badge">6 exercícios</div>
+      </div>
+      <div class="mod-card" onclick="showSection('apresentacao', null)">
+        <div class="mod-icon"><i class="ti ti-presentation" aria-hidden="true"></i></div>
+        <div class="mod-name">Apresentações</div>
+        <div class="mod-desc">Estrutura, abertura de impacto e fecho que convence.</div>
+        <div class="mod-badge">5 exercícios</div>
+      </div>
+      <div class="mod-card" onclick="showSection('presenca', null)">
+        <div class="mod-icon"><i class="ti ti-eye" aria-hidden="true"></i></div>
+        <div class="mod-name">Presença</div>
+        <div class="mod-desc">Linguagem corporal e domínio do espaço.</div>
+        <div class="mod-badge">4 exercícios</div>
+      </div>
+    </div>
+
+    <div class="insight">
+      <i class="ti ti-info-circle" aria-hidden="true"></i>
+      <div class="insight-text">
+        <strong>Como usar esta aplicação</strong>
+        Abre uma vez por dia. Faz o exercício do dia no Início. Depois escolhe um módulo para aprofundar. Consistência bate intensidade — 10 minutos por dia durante 90 dias muda a forma como comunicas.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ VOZ & TOM ═══════════════════ -->
+  <section class="section" id="sec-voz">
+    <div class="section-heading">Voz & Tom</div>
+    <p class="section-sub">A tua voz é o teu instrumento. Aprende a usá-la com intenção e autoridade.</p>
+
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="showTab('voz','ritmo',this)">Ritmo & Pausas</button>
+      <button class="tab-btn" onclick="showTab('voz','projecao',this)">Projeção</button>
+      <button class="tab-btn" onclick="showTab('voz','emocao',this)">Emoção</button>
+      <button class="tab-btn" onclick="showTab('voz','aquecimento',this)">Aquecimento</button>
+    </div>
+
+    <div class="sub-section visible" id="voz-ritmo">
+      <div class="insight">
+        <i class="ti ti-bulb" aria-hidden="true"></i>
+        <div class="insight-text"><strong>A pausa como arma</strong>Os melhores oradores não falam mais depressa. Fazem pausas estratégicas que criam tensão, peso e antecipação. Quem fala sem pausar parece ansioso. Quem pausa parece no controlo.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">exercício 1 · pausas de poder</div>
+        <div class="card-title">Lê em voz alta com pausa obrigatória antes da palavra em maiúsculas:<br><br>"O sucesso não acontece por acaso. [2s] Acontece por ESCOLHA."<br>"Não vou pedir que acredites em mim. [2s] Vou mostrar-te POR QUÊ."</div>
+        <div class="card-tip">Conta mentalmente 1... 2... depois continua. Pratica 5 vezes cada frase. A pausa é desconfortável no início — mas é exatamente aí que está o poder.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">exercício 2 · velocidade variável</div>
+        <div class="card-title">Conta um momento do teu dia. Começa DEVAGAR (contexto), acelera no MOMENTO EMOCIONANTE, volta a abrandar na CONCLUSÃO.</div>
+        <div class="card-tip">A variação de velocidade é o que mantém a atenção. Fala rápido para criar energia, devagar para fazer algo ficar na memória.</div>
+        <div class="timer-row">
+          <div class="timer-display" id="t-ritmo">1:30</div>
+          <button class="btn btn-gold" onclick="startTimer('t-ritmo',90)">Iniciar</button>
+          <button class="btn" onclick="stopTimer()">Parar</button>
+        </div>
+      </div>
+      <div style="margin-top:0.5rem">
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px;">Como correu este exercício?</div>
+        <div class="score-row">
+          <button class="score-btn" onclick="scoreBtn(this,'bad')">Difícil</button>
+          <button class="score-btn" onclick="scoreBtn(this,'ok')">Razoável</button>
+          <button class="score-btn" onclick="scoreBtn(this,'good')">Bem!</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-section" id="voz-projecao">
+      <div class="insight">
+        <i class="ti ti-bulb" aria-hidden="true"></i>
+        <div class="insight-text"><strong>De onde vem a voz?</strong>A voz projetada vem do diafragma, não da garganta. Pessoas com voz projetada soam mais confiantes, são ouvidas com mais atenção e parecem ter mais autoridade — mesmo dizendo as mesmas palavras.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">exercício 1 · projeção abdominal</div>
+        <div class="card-title">Coloca uma mão na barriga, abaixo do umbigo. Diz em voz alta: "Falo com clareza e com convicção." Sentes a barriga a expandir? Repete 5 vezes, com mais volume a cada repetição.</div>
+        <div class="card-tip">Se a mão na barriga não se move, estás a falar da garganta. O objetivo é sentir o movimento abdominal. Isso é a voz diafragmática.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">exercício 2 · o teste dos 10 metros</div>
+        <div class="card-title">Imagina que estás a falar para alguém a 10 metros de distância. Diz claramente: "Bom dia! Como está?" e depois: "Tenho algo importante para vos dizer." Sem gritar — apenas com volume e clareza.</div>
+        <div class="card-tip">Imaginar a distância treina automaticamente a projeção natural. Faz isto antes de reuniões ou apresentações importantes.</div>
+        <div class="timer-row">
+          <div class="timer-display" id="t-projecao">1:00</div>
+          <button class="btn btn-gold" onclick="startTimer('t-projecao',60)">Treinar</button>
+          <button class="btn" onclick="stopTimer()">Parar</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">exercício 3 · ressonância</div>
+        <div class="card-title">Diz "mmmm" durante 5 segundos, sentindo a vibração nos lábios e no nariz. Depois abre para "mmmmaaaa". Depois "mmmmoooo". Repete 3 vezes cada.</div>
+        <div class="card-tip">Este exercício aquece as cordas vocais e ativa a ressonância natural, que torna a voz mais rica e profunda.</div>
+      </div>
+    </div>
+
+    <div class="sub-section" id="voz-emocao">
+      <div class="insight">
+        <i class="ti ti-bulb" aria-hidden="true"></i>
+        <div class="insight-text"><strong>A emoção é contagiosa</strong>Histórias com arco emocional são 22× mais memoráveis que factos. As pessoas não se lembram do que disseste — lembram-se de como as fizeste sentir.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">exercício 1 · emoção intencional</div>
+        <div class="card-title">Diz a mesma frase de três formas distintas:<br><br>"Tenho algo importante para te contar."<br><br>— Com entusiasmo genuíno<br>— Com calma séria e peso<br>— Com curiosidade e intrigue</div>
+        <div class="card-tip">Não basta dizer as palavras certas. Tens de sentir a emoção antes de falares. Fecha os olhos um segundo e entra no estado emocional certo. Isso muda tudo.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">exercício 2 · storytelling em 60 segundos</div>
+        <div class="card-title">Conta uma história de quando superaste um obstáculo real. Tem de ter:<br><br>1. Contexto (quem, onde, quando)<br>2. Tensão (o problema, o risco)<br>3. Virada (o que fizeste)<br>4. Resultado (o que aprendeste)</div>
+        <div class="card-tip">Usa "eu senti", "de repente", "e então percebi". Estes marcadores emocionais ligam o ouvinte à história. Cronometra — 60 segundos é a duração ideal para manter atenção total.</div>
+        <div class="timer-row">
+          <div class="timer-display" id="t-story">1:00</div>
+          <button class="btn btn-gold" onclick="startTimer('t-story',60)">Contar história</button>
+          <button class="btn" onclick="stopTimer()">Parar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-section" id="voz-aquecimento">
+      <div class="insight">
+        <i class="ti ti-bulb" aria-hidden="true"></i>
+        <div class="insight-text"><strong>Aquece antes de momentos importantes</strong>Atletas aquecem antes de competir. Comunicadores de topo também. 5 minutos antes de uma reunião ou apresentação fazem a diferença entre tropeçar nas palavras e soar fluido.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">rotina de aquecimento completa · 5 minutos</div>
+        <div class="card-title">Segue a sequência:</div>
+        <ul style="margin: 0.75rem 0 0.5rem 1.25rem; font-size:14px; color:var(--text); line-height:2.2;">
+          <li><strong>1 min</strong> — Respiração profunda: inspira 4s, segura 4s, expira 6s. Repete 5 vezes.</li>
+          <li><strong>1 min</strong> — "Ba-ba-ba / Da-da-da / Ka-ka-ka" articulado e rápido. Aquece a articulação.</li>
+          <li><strong>1 min</strong> — Trava-línguas: "O rato roeu a rolha da garrafa do rei da Rússia."</li>
+          <li><strong>1 min</strong> — Projeta a frase "Estou preparado e confiante" com volume crescente, 5 vezes.</li>
+          <li><strong>1 min</strong> — Silêncio. Respira fundo. Lembra-te do teu objetivo para o momento seguinte.</li>
+        </ul>
+        <div class="timer-row">
+          <div class="timer-display" id="t-aquece">5:00</div>
+          <button class="btn btn-gold" onclick="startTimer('t-aquece',300)">Iniciar rotina</button>
+          <button class="btn" onclick="stopTimer()">Parar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ CONVERSAS ═══════════════════ -->
+  <section class="section" id="sec-conversa">
+    <div class="section-heading">Dominar Conversas</div>
+    <p class="section-sub">Entra com confiança, capta atenção e faz as pessoas quererem continuar a falar contigo.</p>
+
+    <div class="insight">
+      <i class="ti ti-heart" aria-hidden="true"></i>
+      <div class="insight-text"><strong>A regra de ouro da conversa</strong>As pessoas adoram quem as faz sentir interessantes — não quem tenta parecer interessante. Faz perguntas que vão fundo. Ouve com toda a tua presença.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">exercício 1 · a apresentação memorável</div>
+      <div class="card-title">Pratica 3 versões de te apresentares:<br><br>— Festa casual entre amigos<br>— Reunião profissional ou networking<br>— Evento com alguém que admiras</div>
+      <div class="card-tip">Nunca uses "trabalho em X" como âncora da apresentação. Substitui por algo intrigante: "Estou a tentar perceber porque é que as pessoas tomam decisões irracionais" ou "Estou a construir algo que pode mudar como [X] funciona em Portugal."</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">exercício 2 · perguntas que abrem portas</div>
+      <div class="card-title">Pratica substituir as perguntas genéricas pelas poderosas:</div>
+      <table style="width:100%;font-size:13px;margin-top:0.75rem;border-collapse:collapse;">
+        <tr>
+          <th style="text-align:left;padding:6px 8px;color:var(--text-muted);font-weight:500;border-bottom:0.5px solid var(--border);">Fraca</th>
+          <th style="text-align:left;padding:6px 8px;color:var(--gold-dark);font-weight:500;border-bottom:0.5px solid var(--border);">Poderosa</th>
+        </tr>
+        <tr>
+          <td style="padding:8px;color:var(--text-muted);border-bottom:0.5px solid var(--border);">"O que fazes?"</td>
+          <td style="padding:8px;color:var(--text);border-bottom:0.5px solid var(--border);">"O que te entusiasma mais no que fazes?"</td>
+        </tr>
+        <tr>
+          <td style="padding:8px;color:var(--text-muted);border-bottom:0.5px solid var(--border);">"Como foi o fim de semana?"</td>
+          <td style="padding:8px;color:var(--text);border-bottom:0.5px solid var(--border);">"Qual foi o melhor momento da semana?"</td>
+        </tr>
+        <tr>
+          <td style="padding:8px;color:var(--text-muted);">"De onde és?"</td>
+          <td style="padding:8px;color:var(--text);">"O que te trouxe a esta cidade / evento?"</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-label">exercício 3 · técnica do espelho</div>
+      <div class="card-title">Repete as últimas 1–3 palavras do que a pessoa disse, em forma de pergunta.<br><br>Pessoa: "Foi muito difícil."<br>Tu: "Muito difícil?"<br><br>Pessoa: "Estou a considerar mudar de área."<br>Tu: "Mudar de área?"</div>
+      <div class="card-tip">Esta técnica usada por negociadores do FBI faz as pessoas sentirem-se ouvidas e abre-as para partilharem mais. Simples e devastadoramente eficaz. Pratica em silêncio antes de usar na vida real.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">exercício 4 · silêncio ativo</div>
+      <div class="card-title">Quando alguém terminar de falar, espera 2 segundos antes de responder. Não preenches o silêncio por ansiedade.</div>
+      <div class="card-tip">Responder imediatamente sinaliza que estavas a preparar a resposta, não a ouvir. A pausa de 2 segundos diz "ouvi-te de verdade e estou a processar". Isso é raro. E as pessoas sentem.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">exercício 5 · o cumprimento específico</div>
+      <div class="card-title">Ao terminar uma conversa, usa sempre um cumprimento específico e genuíno:<br><br>"Foi mesmo interessante o que disseste sobre [X]. Vou pensar nisto."</div>
+      <div class="card-tip">Cumprimentos genéricos ("foi ótimo falar contigo") são esquecidos em segundos. Cumprimentos específicos mostram que ouviste de verdade e que o que disseram teve impacto. Ninguém esquece isso.</div>
+    </div>
+
+    <div class="divider"></div>
+    <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:1rem;">Checklist diária de conversas</div>
+    <ul class="checklist" id="conversa-list">
+      <li onclick="toggleCheck(this)"><div class="check-circle"></div><span>Apresentei-me de forma memorável (não apenas "trabalho em X")</span></li>
+      <li onclick="toggleCheck(this)"><div class="check-circle"></div><span>Fiz pelo menos uma pergunta profunda a alguém</span></li>
+      <li onclick="toggleCheck(this)"><div class="check-circle"></div><span>Ouvi sem interromper durante 3+ minutos seguidos</span></li>
+      <li onclick="toggleCheck(this)"><div class="check-circle"></div><span>Usei o nome da pessoa 2× durante a conversa</span></li>
+      <li onclick="toggleCheck(this)"><div class="check-circle"></div><span>Esperei 2 segundos antes de responder em pelo menos uma troca</span></li>
+      <li onclick="toggleCheck(this)"><div class="check-circle"></div><span>Terminei com um cumprimento específico e genuíno</span></li>
+    </ul>
+  </section>
+
+  <!-- ═══════════════════ APRESENTAÇÕES ═══════════════════ -->
+  <section class="section" id="sec-apresentacao">
+    <div class="section-heading">Grandes Apresentações</div>
+    <p class="section-sub">Do nervosismo ao domínio total da sala. Estrutura, presença e fecho que ficam na memória.</p>
+
+    <div class="ap-tabs" id="ap-tabs">
+      <button class="ap-tab-btn active" onclick="showAp('abertura',this)">
+        <div class="ap-tab-icon"><i class="ti ti-door-enter" aria-hidden="true"></i></div>
+        <div class="ap-tab-name">Abertura</div>
+        <div class="ap-tab-desc">Os primeiros 30s definem tudo</div>
+      </button>
+      <button class="ap-tab-btn" onclick="showAp('estrutura',this)">
+        <div class="ap-tab-icon"><i class="ti ti-layout-list" aria-hidden="true"></i></div>
+        <div class="ap-tab-name">Estrutura</div>
+        <div class="ap-tab-desc">Ideias com impacto e fluxo</div>
+      </button>
+      <button class="ap-tab-btn" onclick="showAp('fecho',this)">
+        <div class="ap-tab-icon"><i class="ti ti-flag" aria-hidden="true"></i></div>
+        <div class="ap-tab-name">Fecho</div>
+        <div class="ap-tab-desc">O fim que ninguém esquece</div>
+      </button>
+      <button class="ap-tab-btn" onclick="showAp('nervos',this)">
+        <div class="ap-tab-icon"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i></div>
+        <div class="ap-tab-name">Nervosismo</div>
+        <div class="ap-tab-desc">Transforma-o em energia</div>
+      </button>
+    </div>
+
+    <div class="ap-content visible" id="ap-abertura">
+      <div class="insight">
+        <i class="ti ti-bulb" aria-hidden="true"></i>
+        <div class="insight-text"><strong>O gancho ou a morte</strong>Nunca comeces com "Olá, chamo-me X e vou falar sobre Y". Começas com o gancho. O nome e o tema vêm depois.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">os 3 tipos de gancho</div>
+        <div class="card-title">Escolhe um e pratica-o para um tema teu:</div>
+        <ul style="margin:0.75rem 0 0.5rem 1.25rem;font-size:14px;color:var(--text);line-height:2.2;">
+          <li><strong>Pergunta retórica:</strong> "Quantas vezes já sentiste que podias ter dito muito melhor?"</li>
+          <li><strong>Facto surpreendente:</strong> "93% do que comunicamos não são palavras."</li>
+          <li><strong>Frase provocadora:</strong> "Tudo o que aprendeste sobre comunicação provavelmente está errado."</li>
+        </ul>
+        <div class="card-tip">O gancho deve durar no máximo 15 segundos. Depois vem a pausa. Depois o teu nome. Nessa ordem.</div>
+        <div class="timer-row">
+          <div class="timer-display" id="t-abertura">0:30</div>
+          <button class="btn btn-gold" onclick="startTimer('t-abertura',30)">Treinar abertura</button>
+          <button class="btn" onclick="stopTimer()">Parar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ap-content" id="ap-estrutura">
+      <div class="insight">
+        <i class="ti ti-bulb" aria-hidden="true"></i>
+        <div class="insight-text"><strong>A regra dos três</strong>O cérebro humano retém no máximo 3 ideias de uma apresentação. Se tens 7 pontos, o público fica com 0. Simplifica para amplificar.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">framework · TED em 3 atos</div>
+        <div class="card-title">Toda a apresentação tem esta estrutura:<br><br>1. <strong>Problema / Tensão</strong> — Por que é que isto importa? O que está em jogo?<br>2. <strong>Virada / Solução</strong> — A tua perspetiva única. O que é diferente.<br>3. <strong>Visão / Call to Action</strong> — Para onde vamos? O que vão fazer diferente?</div>
+        <div class="card-tip">Antes de qualquer apresentação, escreve estas 3 frases: "O problema é X. A minha solução é Y. Quero que saiam daqui a fazer Z." Se não consegues preencher as 3, a apresentação ainda não está pronta.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">exercício · transições fluidas</div>
+        <div class="card-title">Pratica fazer a ponte entre ideias com frases de transição:<br><br>"Isto leva-nos diretamente a..."<br>"E porquê é que isto importa? Porque..."<br>"A questão real, no entanto, é..."<br>"Vejamos isto de outro ângulo..."</div>
+        <div class="card-tip">As transições são onde os oradores perdem o público. Uma boa transição recapitula o ponto anterior e cria antecipação para o próximo.</div>
+      </div>
+    </div>
+
+    <div class="ap-content" id="ap-fecho">
+      <div class="insight">
+        <i class="ti ti-bulb" aria-hidden="true"></i>
+        <div class="insight-text"><strong>O fim é o que fica</strong>As pessoas lembram-se do início e do fim. Nunca termines com "obrigado, há perguntas?". Termina com intenção.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">os 3 tipos de fecho poderoso</div>
+        <div class="card-title">
+          <strong>1. A pergunta que fica na cabeça:</strong><br>
+          "Quando saírem daqui hoje, pergunto-vos: o que vão fazer de diferente?"<br><br>
+          <strong>2. A frase-síntese:</strong><br>
+          "A comunicação não é o que dizes. É o que o outro guarda."<br><br>
+          <strong>3. O desafio concreto:</strong><br>
+          "Nos próximos 7 dias, façam uma coisa diferente em cada conversa. Uma. E observem o que muda."
+        </div>
+        <div class="card-tip">Escreve o teu fecho antes de qualquer outra parte da apresentação. O fecho define o tom de tudo o que vem antes.</div>
+        <div class="timer-row">
+          <div class="timer-display" id="t-fecho">0:45</div>
+          <button class="btn btn-gold" onclick="startTimer('t-fecho',45)">Treinar fecho</button>
+          <button class="btn" onclick="stopTimer()">Parar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ap-content" id="ap-nervos">
+      <div class="insight">
+        <i class="ti ti-bulb" aria-hidden="true"></i>
+        <div class="insight-text"><strong>Nervosismo não é fraqueza — é energia</strong>O que sentes antes de falar em público é exatamente o mesmo que os atletas sentem antes de competir. A diferença está no que fazes com isso.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">técnica 1 · reframe cognitivo</div>
+        <div class="card-title">Substitui o pensamento "estou nervoso" por "estou entusiasmado".<br><br>Faz isto em voz alta antes de apresentares: "Estou entusiasmado. Estou preparado. Estou aqui por uma razão."</div>
+        <div class="card-tip">Estudos de Harvard mostram que a reinterpretação do nervosismo como entusiasmo melhora a performance mensurável. O teu corpo não distingue — tu é que defines o rótulo.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">técnica 2 · respiração 4-4-6</div>
+        <div class="card-title">Inspira 4 segundos → segura 4 segundos → expira 6 segundos.<br>Repete 5 vezes antes de entrar na sala.</div>
+        <div class="card-tip">A expiração mais longa ativa o sistema nervoso parassimpático — literalmente acalma o teu corpo a nível fisiológico. Não é metáfora. Funciona.</div>
+        <div class="timer-row">
+          <div class="timer-display" id="t-respira">2:20</div>
+          <button class="btn btn-gold" onclick="startTimer('t-respira',140)">Praticar respiração</button>
+          <button class="btn" onclick="stopTimer()">Parar</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">técnica 3 · âncora de confiança</div>
+        <div class="card-title">Lembra-te vividamente de um momento em que comunicaste muito bem. Onde estavas? O que sentiste? Revive-o durante 30 segundos antes de entrares.</div>
+        <div class="card-tip">O cérebro não distingue bem entre memória e realidade. Ativar uma memória de sucesso coloca-te no estado emocional certo para criar um novo sucesso.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ PRESENÇA ═══════════════════ -->
+  <section class="section" id="sec-presenca">
+    <div class="section-heading">Presença & Impacto</div>
+    <p class="section-sub">93% da comunicação é não-verbal. Treina o que ninguém te ensinou na escola.</p>
+
+    <div class="insight">
+      <i class="ti ti-body-scan" aria-hidden="true"></i>
+      <div class="insight-text"><strong>O corpo fala antes de abrires a boca</strong>Postura aberta, contacto visual direto e movimentos calmos e deliberados sinalizam confiança e autoridade — ao teu cérebro e ao dos outros — antes de dizeres uma palavra.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">exercício 1 · postura de poder</div>
+      <div class="card-title">Antes de qualquer situação importante, fica 2 minutos em postura expansiva:<br><br>— Costas completamente direitas<br>— Ombros abertos e para trás<br>— Queixo paralelo ao chão (nem para cima, nem para baixo)<br>— Pés à largura dos ombros<br>— Mãos abertas, não nos bolsos</div>
+      <div class="card-tip">Não faças isto à frente das pessoas — faz antes, numa casa de banho, no corredor, no carro. 2 minutos reduzem cortisol (stress) e aumentam a sensação de confiança. Está comprovado. Faz a diferença que se sente — não só em ti, mas nos outros.</div>
+      <div class="timer-row">
+        <div class="timer-display" id="t-postura">2:00</div>
+        <button class="btn btn-gold" onclick="startTimer('t-postura',120)">Iniciar postura</button>
+        <button class="btn" onclick="stopTimer()">Parar</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">exercício 2 · contacto visual triangular</div>
+      <div class="card-title">Ao falar com alguém, move os olhos suavemente entre os dois olhos e a boca da pessoa, formando um triângulo. Mantém 3–4 segundos em cada ponto antes de mover.</div>
+      <div class="card-tip">Contacto visual constante e fixo pode ser invasivo. O triângulo é a forma natural de mostrar atenção e interesse genuíno. Pratica em casa, no espelho, antes de usar em conversas reais.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">exercício 3 · entrar na sala</div>
+      <div class="card-title">Pratica entrar numa divisão com intenção:<br><br>1. Para à porta — 1 segundo<br>2. Scan visual do espaço — olha para os lados<br>3. Escolhe um ponto focal na sala<br>4. Avança com passo constante, não apressado</div>
+      <div class="card-tip">A forma como entras num espaço define como és percebido antes de dizeres uma palavra. Entrar cabeça baixa ou apressado comunica nervosismo. Um segundo de pausa à porta comunica presença e propósito.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">exercício 4 · gestos deliberados</div>
+      <div class="card-title">Ao falar, usa as mãos para reforçar ideias — mas com intenção, não por hábito.<br><br>— Para ideias grandes: abre os braços<br>— Para separar conceitos: usa as mãos alternadamente<br>— Para enfatizar um ponto: move uma mão para baixo com força<br>— Para acalmar: palmas para baixo, movimento suave</div>
+      <div class="card-tip">Gestos que contradizem as palavras destroem credibilidade. Gestos que amplificam as palavras aumentam o impacto. Pratica em frente ao espelho ou grava-te.</div>
+    </div>
+
+    <div class="divider"></div>
+    <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:1rem;">Checklist de presença diária</div>
+    <ul class="checklist">
+      <li onclick="toggleCheck(this)"><div class="check-circle"></div><span>Pratiquei postura de poder hoje (2 minutos)</span></li>
+      <li onclick="toggleCheck(this)"><div class="check-circle"></div><span>Mantive contacto visual em pelo menos uma conversa</span></li>
+      <li onclick="toggleCheck(this)"><div class="check-circle"></div><span>Entrei num espaço com intenção e pausa</span></li>
+      <li onclick="toggleCheck(this)"><div class="check-circle"></div><span>Os meus gestos foram calmos e deliberados</span></li>
+    </ul>
+  </section>
+
+  <!-- ═══════════════════ ARSENAL ═══════════════════ -->
+  <section class="section" id="sec-arsenal">
+    <div class="section-heading">Arsenal de Linguagem</div>
+    <p class="section-sub">Frases e técnicas para cada momento. Usa-as, adapta-as, torna-as genuinamente tuas.</p>
+
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="showTab('arsenal','impressao',this)">Primeira Impressão</button>
+      <button class="tab-btn" onclick="showTab('arsenal','persuasao',this)">Persuasão</button>
+      <button class="tab-btn" onclick="showTab('arsenal','conexao',this)">Conexão</button>
+      <button class="tab-btn" onclick="showTab('arsenal','desconforto',this)">Situações Difíceis</button>
+    </div>
+
+    <div class="sub-section visible" id="arsenal-impressao">
+      <div class="phrase-card">
+        <div class="phrase-situation">apresentação pessoal intrigante</div>
+        <div class="phrase-text">"Chamo-me [nome]. Estou a trabalhar em [algo intrigante] — ainda estou a descobrir para onde vai levar."</div>
+        <div class="phrase-why">Abre curiosidade imediata. Convida a pessoa a perguntar mais. Soa genuíno e não ensaiado — porque não é.</div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-situation">quebrar o gelo com impacto</div>
+        <div class="phrase-text">"Já estive em muitos eventos assim, mas raramente encontro alguém que [faça o que a pessoa faz]. Como é isso na prática?"</div>
+        <div class="phrase-why">Faz a pessoa sentir-se especial e diferente antes de dizer uma palavra. A ligação começa com o reconhecimento.</div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-situation">despedida memorável</div>
+        <div class="phrase-text">"Foi mesmo interessante o que disseste sobre [tema específico]. Vou pensar nisto. Fico contente que nos tenhamos cruzado."</div>
+        <div class="phrase-why">Mostras que ouviste de verdade. Ninguém esquece quem os fez sentir que o que disseram valeu a pena ser ouvido.</div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-situation">criar intriga sobre ti</div>
+        <div class="phrase-text">"Tenho um projeto que não sei bem como explicar em 30 segundos — e isso provavelmente é um bom sinal."</div>
+        <div class="phrase-why">A ambiguidade controlada cria curiosidade. Pessoas curiosas querem continuar a conversa.</div>
+      </div>
+    </div>
+
+    <div class="sub-section" id="arsenal-persuasao">
+      <div class="phrase-card">
+        <div class="phrase-situation">propor uma ideia ou decisão</div>
+        <div class="phrase-text">"Imagina por um momento que [cenário]. O que acharias se pudéssemos fazer isso de verdade?"</div>
+        <div class="phrase-why">Pedes à pessoa para imaginar antes de avaliar. O cérebro que imagina já está meio convencido — é assim que funciona.</div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-situation">lidar com objeções sem confrontar</div>
+        <div class="phrase-text">"Faz sentido o que dizes. E ao mesmo tempo, noto que [o teu ponto de vista]."</div>
+        <div class="phrase-why">"E" em vez de "mas" valida a perspetiva do outro sem a contradizer. Mantém a conversa aberta e colaborativa. "Mas" apaga tudo o que veio antes.</div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-situation">criar urgência natural e honesta</div>
+        <div class="phrase-text">"O que sei é que quem age cedo nisto tem sempre uma vantagem diferente — não porque seja justo, mas simplesmente porque é assim que funciona."</div>
+        <div class="phrase-why">Urgência baseada em observação real, não em pressão artificial. Soa honesto porque é.</div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-situation">influenciar sem pressionar</div>
+        <div class="phrase-text">"Não te estou a dizer o que fazer. Estou só a partilhar o que eu faria se estivesse na tua posição com o que sei agora."</div>
+        <div class="phrase-why">Reposiciona a tua opinião como perspetiva, não como julgamento. Remove a pressão e aumenta a receptividade.</div>
+      </div>
+    </div>
+
+    <div class="sub-section" id="arsenal-conexao">
+      <div class="phrase-card">
+        <div class="phrase-situation">aprofundar uma conversa</div>
+        <div class="phrase-text">"Isso que disseste sobre [X] — quero perceber melhor. O que te levou a pensar assim?"</div>
+        <div class="phrase-why">Mostras que ouviste de verdade. As pessoas adoram quem as quer compreender, não apenas quem espera a sua vez de falar.</div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-situation">criar cumplicidade intelectual</div>
+        <div class="phrase-text">"Tenho a sensação de que pensas sobre estas coisas de uma forma diferente da maioria das pessoas."</div>
+        <div class="phrase-why">Faz a pessoa sentir-se vista e especial de uma forma genuína. Cria uma identidade partilhada de "nós que pensamos de forma diferente".</div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-situation">follow-up poderoso (dias depois)</div>
+        <div class="phrase-text">"Lembrei-me de ti quando vi/li [algo concreto] — pareceu-me que te ia interessar porque [razão específica que tem a ver com a conversa que tiveram]."</div>
+        <div class="phrase-why">Mostras que pensaste nela fora do contexto. Isso é extremamente raro e é exatamente o que cria ligações duradouras com pessoas de sucesso.</div>
+      </div>
+    </div>
+
+    <div class="sub-section" id="arsenal-desconforto">
+      <div class="phrase-card">
+        <div class="phrase-situation">quando te interrompem</div>
+        <div class="phrase-text">"Quero mesmo ouvir o teu ponto — deixa-me só terminar este raciocínio e depois estou todo para ti."</div>
+        <div class="phrase-why">Assertivo sem ser agressivo. Mantens o teu espaço de falar sem criar conflito. A calma com que dizes isto é metade do impacto.</div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-situation">quando não sabes a resposta</div>
+        <div class="phrase-text">"Não tenho uma resposta imediata que faça jus à pergunta. Posso pensar e responder-te com substância?"</div>
+        <div class="phrase-why">Admitir que não sabes algo com esta elegância transforma uma potencial fraqueza num sinal de integridade intelectual. As pessoas confiam mais em quem faz isto.</div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-situation">quando precisas de dizer não</div>
+        <div class="phrase-text">"Agradeço muito que tenhas pensado em mim para isso. Neste momento não me é possível dar-te o que mereces — e prefiro ser honesto a comprometer-me a metade."</div>
+        <div class="phrase-why">Dizer não com esta elegância preserva a relação e eleva-te. Mostra que te importas com a qualidade, não só com agradar.</div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-situation">quando há tensão numa conversa</div>
+        <div class="phrase-text">"Tenho a sensação de que estamos a falar sobre coisas diferentes. Posso tentar perceber melhor o que é importante para ti aqui?"</div>
+        <div class="phrase-why">Desativa a tensão sem a ignorar. Reposiciona-te como aliado em vez de adversário. Muito difícil de recusar.</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // ── STATE ──────────────────────────────────────────────
+  let exCount = parseInt(localStorage.getItem('vp_ex') || '0');
+  let streakDays = parseInt(localStorage.getItem('vp_streak') || '0');
+  let lastVisit = localStorage.getItem('vp_last') || '';
+  let timerRef = null;
+  let currentExIdx = Math.floor(Math.random() * dailyExercises().length);
+
+  function dailyExercises() {
+    return [
+      { text: "Diz em voz alta, 3 vezes com convicção crescente: 'A minha presença tem valor. As minhas palavras importam. As pessoas querem ouvir-me.'", tip: "A repetição com intensidade crescente treina o cérebro a acreditar. Não é autoengano — é treino cognitivo." },
+      { text: "Em frente ao espelho, pratica entrar numa divisão: para um segundo, olha à frente, depois avança com passo deliberado. Repete 3 vezes.", tip: "O espelho dá-te o feedback que os outros têm mas raramente partilham. Vês o que o mundo vê." },
+      { text: "Conta uma memória positiva de ontem em exatamente 5 frases, com início, desenvolvimento e conclusão emocionalmente envolvente.", tip: "Estrutura narrativa em microdoses. O objetivo é automatizar o storytelling até ser completamente natural." },
+      { text: "Escolhe uma palavra que descreva como queres que as pessoas te sintam hoje. Escreve-a. Repete-a em silêncio 5 vezes enquanto respiras fundo.", tip: "Intenção consciente muda o comportamento inconsciente. Não é misticismo — é foco direcionado." },
+      { text: "Pratica dizer não de forma assertiva e calorosa em voz alta: 'Agradeço muito, mas neste momento não me é possível dar-te o que mereces nisso.'", tip: "Dizer não com elegância é uma das competências mais subestimadas da comunicação pessoal. E uma das mais respeitadas." },
+      { text: "Recorda a última conversa difícil que tiveste. Escreve como a abordarias agora com as técnicas que tens — nova abertura, nova técnica, novo fecho.", tip: "A reflexão retroativa é treino real. O cérebro consolida aprendizagens quando as revisita com intenção." },
+      { text: "Pratica a técnica do espelho em voz alta: escolhe uma frase, diz-a, e repete as últimas 3 palavras como pergunta. Faz 5 variações diferentes.", tip: "Esta técnica do FBI faz as pessoas sentirem-se ouvidas. Parece simples. O impacto na vida real é surpreendente." },
+    ];
+  }
+
+  // ── INIT ────────────────────────────────────────────────
+  window.onload = function() {
+    const today = new Date().toDateString();
+    if (lastVisit !== today) {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      if (lastVisit === yesterday.toDateString()) {
+        streakDays++;
+      } else if (lastVisit !== '') {
+        streakDays = 1;
+      } else {
+        streakDays = 1;
+      }
+      localStorage.setItem('vp_last', today);
+      localStorage.setItem('vp_streak', streakDays);
+    }
+    renderStats();
+    renderStreak();
+    renderDaily();
+  };
+
+  function renderStats() {
+    document.getElementById('stat-streak').textContent = streakDays;
+    document.getElementById('stat-ex').textContent = exCount;
+  }
+
+  function renderStreak() {
+    const days = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+    const today = new Date().getDay();
+    const adjusted = today === 0 ? 6 : today - 1;
+    const row = document.getElementById('streak-dots');
+    row.innerHTML = '';
+    days.forEach((d, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'streak-dot' + (i < adjusted ? ' done' : (i === adjusted ? ' today' : ''));
+      dot.textContent = d.charAt(0);
+      dot.title = d;
+      row.appendChild(dot);
+    });
+    const pct = Math.round((adjusted / 7) * 100);
+    document.getElementById('week-bar').style.width = pct + '%';
+    document.getElementById('week-pct').textContent = pct + '%';
+  }
+
+  function renderDaily() {
+    const exs = dailyExercises();
+    const ex = exs[currentExIdx % exs.length];
+    document.getElementById('daily-text').textContent = ex.text;
+    document.getElementById('daily-tip').textContent = ex.tip;
+    document.getElementById('daily-feedback').classList.remove('visible');
+  }
+
+  function markDone() {
+    exCount++;
+    localStorage.setItem('vp_ex', exCount);
+    renderStats();
+    const msgs = [
+      "Excelente! Cada repetição cria novas ligações neurais. Estás a construir algo real, passo a passo.",
+      "Feito! A consistência bate a intensidade. Um exercício por dia transforma-te em 90 dias.",
+      "Muito bem! Lembra-te: a comunicação é uma competência, não um talento. Treinas, melhorias.",
+      "Ótimo trabalho. Os melhores comunicadores do mundo não nasceram assim — treinaram assim.",
+    ];
+    const fb = document.getElementById('daily-feedback');
+    fb.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+    fb.classList.add('visible');
+  }
+
+  function nextExercise() {
+    currentExIdx++;
+    renderDaily();
+  }
+
+  // ── NAVIGATION ─────────────────────────────────────────
+  function showSection(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+    document.getElementById('sec-' + id).classList.add('visible');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    if (btn) { btn.classList.add('active'); }
+    else {
+      const nav = document.querySelector('.nav-bar');
+      const btns = nav.querySelectorAll('.nav-btn');
+      const map = { inicio:0, voz:1, conversa:2, apresentacao:3, presenca:4, arsenal:5 };
+      if (map[id] !== undefined) btns[map[id]].classList.add('active');
+    }
+    stopTimer();
+  }
+
+  // ── TABS ───────────────────────────────────────────────
+  function showTab(group, tab, btn) {
+    const sec = document.getElementById('sec-' + group);
+    sec.querySelectorAll('.sub-section').forEach(s => s.classList.remove('visible'));
+    document.getElementById(group + '-' + tab).classList.add('visible');
+    sec.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    stopTimer();
+  }
+
+  function showAp(tab, btn) {
+    document.querySelectorAll('.ap-content').forEach(c => c.classList.remove('visible'));
+    document.getElementById('ap-' + tab).classList.add('visible');
+    document.querySelectorAll('.ap-tab-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    stopTimer();
+  }
+
+  // ── TIMER ──────────────────────────────────────────────
+  function startTimer(id, seconds) {
+    stopTimer();
+    let remaining = seconds;
+    const el = document.getElementById(id);
+    el.classList.remove('done');
+    function fmt(s) {
+      const m = Math.floor(s / 60);
+      const sec = s % 60;
+      return m + ':' + String(sec).padStart(2, '0');
+    }
+    el.textContent = fmt(remaining);
+    timerRef = setInterval(() => {
+      remaining--;
+      if (remaining <= 0) {
+        clearInterval(timerRef);
+        timerRef = null;
+        el.textContent = '✓ Feito';
+        el.classList.add('done');
+        exCount++;
+        localStorage.setItem('vp_ex', exCount);
+        renderStats();
+      } else {
+        el.textContent = fmt(remaining);
+      }
+    }, 1000);
+  }
+
+  function stopTimer() {
+    if (timerRef) { clearInterval(timerRef); timerRef = null; }
+  }
+
+  // ── CHECKLIST ──────────────────────────────────────────
+  function toggleCheck(li) {
+    const c = li.querySelector('.check-circle');
+    const isDone = c.classList.toggle('done');
+    c.textContent = isDone ? '✓' : '';
+    if (isDone) {
+      exCount++;
+      localStorage.setItem('vp_ex', exCount);
+      renderStats();
+    } else {
+      exCount = Math.max(0, exCount - 1);
+      localStorage.setItem('vp_ex', exCount);
+      renderStats();
+    }
+  }
+
+  // ── SCORE ──────────────────────────────────────────────
+  function scoreBtn(btn, level) {
+    const row = btn.closest('.score-row');
+    row.querySelectorAll('.score-btn').forEach(b => b.className = 'score-btn');
+    btn.classList.add(level);
+    if (level === 'good') {
+      exCount++;
+      localStorage.setItem('vp_ex', exCount);
+      renderStats();
+    }
+  }
+</script>
+</body>
+</html>
